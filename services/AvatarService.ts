@@ -1,10 +1,10 @@
-import {useAccount, useReadContract, useWriteContract} from "@wagmi/vue";
+import {useAccount, useChainId, useReadContract, useWriteContract} from "@wagmi/vue";
 import { abi } from "~/abi/AvatarService";
-
-const contractAddress = "0xAD3f6f599dcd1F7D450f170A1b353eEb6048cb8a";
+import {useAvatarServiceContractAddress} from "~/composables/useAvatarServiceContractAddress";
 
 export default function useAvatarService() {
   const { address } = useAccount();
+
   const {
     data: setAvatarHash,
     error: setAvatarError,
@@ -15,7 +15,7 @@ export default function useAvatarService() {
   function setAvatar(tokenAddress: string, tokenId: BigInt) {
     writeContract({
       abi,
-      address: contractAddress,
+      address: useAvatarServiceContractAddress(),
       functionName: "setAvatar",
       args: [tokenAddress, tokenId]
     });
@@ -23,7 +23,7 @@ export default function useAvatarService() {
 
   const { data: avatarInfo, refetch: getAvatarInfo } = useReadContract({
     abi,
-    address: contractAddress,
+    address: useAvatarServiceContractAddress(),
     functionName: "getAvatarInfo",
     args: [address],
   });
