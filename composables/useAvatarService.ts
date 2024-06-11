@@ -46,6 +46,9 @@ export function useAvatarService() {
       address: contractAddress.value,
       functionName: "getAvatarInfo",
       args: [address.value],
+      query: {
+        gcTime: "Infinity"
+      }
     })
   }
 
