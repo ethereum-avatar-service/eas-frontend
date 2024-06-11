@@ -5,16 +5,23 @@
         <div class="hidden md:flex items-center gap-8">
           <h1 class="font-bold text-xl text-blue-400">ethereum avatar service</h1>
           <div class="flex items-center gap-2">
-            <NuxtLink to="/" class="link">My avatar</NuxtLink>
+            <NuxtLink to="/" class="link" active-class="link-active">My avatar</NuxtLink>
             <NuxtLink class="link">Verified collections</NuxtLink>
           </div>
         </div>
         <h1 class="md:hidden font-bold text-2xl text-blue-400">eas</h1>
-        <div class="ml-auto flex items-center">
+        <div class="ml-auto px-2 flex items-center gap-1">
           <template v-if="isConnected && address">
-            <button disabled class="px-3 h-8 bg-neutral-100 text-neutral-400/75 rounded-full duration-300">{{ `${address.slice(0, 6)}...${address.slice(38, 42)}` }}</button>
-            <button @click="disconnect" class="ml-1 w-8 h-8 flex justify-center items-center hover:bg-red-100 text-red-400 hover:text-red-500 duration-300 rounded-full">
+            <button class="px-2 h-10 flex justify-center items-center gap-1 hover:bg-neutral-100 rounded-2xl">
+              <div class="w-7 h-7 flex justify-center items-center bg-purple-100 fill-purple-500 rounded-lg">
+                <IconsEthereum class="w-4 h-4" />
+              </div>
+              <ChevronDownIcon class="w-6 h-6 text-neutral-400" />
+            </button>
+            <button disabled class="px-3 h-8 bg-neutral-100 text-sm text-neutral-400 rounded-full duration-300">{{ `${address.slice(0, 6)}...${address.slice(38, 42)}` }}</button>
+            <button @click="disconnect" class="group px-2 h-8 flex justify-center gap-2 items-center hover:bg-red-100 text-sm text-red-400 hover:text-red-500 duration-300 rounded-full">
               <PowerIcon class="w-5 h-5" />
+              <span class="hidden group-hover:block overflow-hidden transition-all duration-300">Disconnect</span>
             </button>
           </template>
           <template v-else>
@@ -55,6 +62,9 @@
               </svg>
             </div>
           </template>
+          <button @click="getAvatarInfo" class="p-4 flex gap-2 flex-nowrap justify-center items-center bg-blue-500/20 hover:bg-blue-500/25 disabled:bg-neutral-100 text-blue-500 disabled:text-neutral-400/75 rounded-2xl duration-300 w-full">
+            <span class="font-medium text-lg">Refresh avatar</span>
+          </button>
           <hr class="h-[2px] bg-neutral-100 border-0">
           <div class="flex flex-col gap-8">
             <p class="px-2 text-neutral-500">Set one of your NFTs as the avatar for your wallet address. The NFT must be held in the same wallet.</p>
@@ -97,32 +107,47 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import useAvatarService from "~/services/AvatarService";
-import { useConnect, useDisconnect, useAccount } from "@wagmi/vue";
-import { injected } from "@wagmi/vue/connectors";
-import { zeroAddress, isAddress } from "viem";
-import { PowerIcon } from "@heroicons/vue/16/solid";
-import { CheckBadgeIcon } from "@heroicons/vue/20/solid";
+import {onMounted, ref} from "vue";
+import {useAccount, useConnect, useDisconnect} from "@wagmi/vue";
+import {injected} from "@wagmi/vue/connectors";
+import {isAddress, zeroAddress} from "viem";
+import {PowerIcon} from "@heroicons/vue/16/solid";
+import {CheckBadgeIcon, ChevronDownIcon} from "@heroicons/vue/20/solid";
 
 const { connect } = useConnect();
 const { disconnect } = useDisconnect()
-const { address, isConnected } = useAccount();
+const { address, isConnected, chainId } = useAccount();
 
 const {
   setAvatar,
   setAvatarHash,
   setAvatarError,
   setAvatarIsPending,
-  avatarInfo,
   getAvatarInfo
 } = useAvatarService();
 
+const avatarInfo = ref(null);
 const tokenAddress = ref("");
 const tokenId = ref(BigInt(0));
 
 // Placeholder
 const src = "https://ipfs.io/ipfs/Qmcg8f4F9cig2JWXunxJcdBe58Q5myYXPmGfuMn1TVeswD/nft.mp4";
+
+watch(chainId, () => {
+  updateAvatarInfo();
+});
+
+watch(setAvatarIsPending, () => {
+  updateAvatarInfo();
+});
+
+async function updateAvatarInfo() {
+  try {
+    avatarInfo.value = await getAvatarInfo();
+  } catch(err) {
+
+  }
+}
 
 const isValidTokenAddress = computed(() => {
   return !!tokenAddress.value && isAddress(tokenAddress.value);
@@ -152,7 +177,7 @@ function handleSetAvatar() {
 
     setAvatar(tokenAddr, tokenId.value);
 
-    getAvatarInfo();
+    updateAvatarInfo();
   } catch (error) {
     console.error("Error setting avatar:", error);
   }
@@ -164,10 +189,10 @@ function connectWallet() {
 
 onMounted(() => {
   if (isConnected) {
-    getAvatarInfo();
+    updateAvatarInfo();
   } else {
     connectWallet();
-    getAvatarInfo();
+    updateAvatarInfo();
   }
 });
 </script>
@@ -175,6 +200,10 @@ onMounted(() => {
 <style>
 .link {
   @apply px-3 h-10 flex items-center hover:bg-neutral-100 text-neutral-400 rounded-full cursor-pointer duration-300;
+}
+
+.link-active {
+  @apply text-neutral-950;
 }
 
 .input {

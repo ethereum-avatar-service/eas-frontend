@@ -1,9 +1,10 @@
-import { http, createConfig } from "@wagmi/vue"
-import { sepolia } from "@wagmi/vue/chains"
+import { http, createConfig } from "@wagmi/vue";
+import { sepolia, polygon } from "@wagmi/vue/chains";
 
 export const config = createConfig({
-  chains: [sepolia],
+  chains: [sepolia, polygon],
   transports: {
     [sepolia.id]: http(),
+    [polygon.id]: http(),
   },
 })
