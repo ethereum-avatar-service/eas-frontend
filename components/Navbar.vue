@@ -40,7 +40,7 @@ const { address, isConnected } = useAccount();
 
 <style scoped>
 .link {
-  @apply px-3 h-10 flex items-center hover:bg-neutral-100 text-neutral-400 rounded-full cursor-pointer duration-300;
+  @apply px-3 h-10 flex items-center hover:bg-neutral-100 text-neutral-400 rounded-2xl cursor-pointer duration-300;
 }
 
 .link-active {

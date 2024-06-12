@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4">
+  <div class="px-4 text-[0.95rem]">
     <Navbar />
     <div class="pt-[72px]">
       <NuxtPage />

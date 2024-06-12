@@ -11,6 +11,26 @@
             <div class="mt-16 flex flex-col gap-2 text-center w-full">
               <label class="px-2 text-sm text-neutral-400/75">Token Address</label>
               <div class="p-4 bg-neutral-100 text-neutral-400/75 rounded-2xl truncate">{{ avatarInfo.avatar?.tokenAddress }}</div>
+              <label class="mt-2 px-2 text-sm text-neutral-400/75">Token ID</label>
+              <div class="p-4 bg-neutral-100 text-neutral-400/75 rounded-2xl truncate">{{ avatarInfo.avatar?.tokenId }}</div>
+              <div class="p-4 rounded-2xl truncate" :class="{ 'bg-green-100 text-green-500': avatarInfo.owned, 'bg-red-100 text-red-500': !avatarInfo.owned }">{{ avatarInfo.owned ? "Owned" : "Not owned" }}</div>
+              <label class="mt-2 px-2 text-sm text-neutral-400/75">Collection</label>
+              <div class="p-4 flex flex-col gap-2 border-2 border-neutral-100 rounded-2xl truncate">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm text-neutral-400/75">NAME:</span>
+                  <span>Nyan Cat (Official)</span>
+                </div>
+                <hr class="h-[2px] bg-neutral-100 border-0">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm text-neutral-400/75">WEBSITE:</span>
+                  <a href="https://www.nyan.cat/" class="text-sky-500">nyan.cat</a>
+                </div>
+                <hr class="h-[2px] bg-neutral-100 border-0">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm text-neutral-400/75">MARKET:</span>
+                  <a href="https://opensea.io/collection/nyan-cat-official" class="text-sky-500">opensea.io/collection/nyan-cat-official</a>
+                </div>
+              </div>
               <div class="p-4 flex justify-center items-center gap-2">
                 <CheckBadgeIcon class="w-5 h-5 text-green-400" />
                 <span class="text-sm text-neutral-400/75">Collection is verified</span>
@@ -18,9 +38,6 @@
               <div class="p-4 border-2 border-neutral-100 rounded-2xl">
                 <p class="text-sm text-neutral-400/75">To combat fraudulent collections, such as copycats, EAS has implemented a collection verification system.</p>
               </div>
-              <label class="mt-2 px-2 text-sm text-neutral-400/75">Token ID</label>
-              <div class="p-4 bg-neutral-100 text-neutral-400/75 rounded-2xl truncate">{{ avatarInfo.avatar?.tokenId }}</div>
-              <div class="p-4 rounded-2xl truncate" :class="{ 'bg-green-100 text-green-500': avatarInfo.owned, 'bg-red-100 text-red-500': !avatarInfo.owned }">{{ avatarInfo.owned ? "Owned" : "Not owned" }}</div>
             </div>
           </div>
         </template>
