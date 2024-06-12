@@ -93,7 +93,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {useAccount, useConnect, useWaitForTransactionReceipt} from "@wagmi/vue";
+import {useAccount, useConnect} from "@wagmi/vue";
 import {injected} from "@wagmi/vue/connectors";
 import {isAddress, zeroAddress} from "viem";
 import {CheckBadgeIcon, CheckIcon, XMarkIcon} from "@heroicons/vue/20/solid";
@@ -125,6 +125,7 @@ onMounted(() => {
 });
 
 watch(chainId, () => {
+  resetStates();
   updateAvatarInfo();
 });
 
@@ -152,28 +153,32 @@ const isImage = computed(() => {
   return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(src);
 });
 
+function resetStates() {
+  setAvatarError.value = null;
+  setAvatarHash.value = null;
+}
+
 function connectWallet() {
   connect({ connector: injected() });
 }
 
 async function handleSetAvatar() {
   try {
-    setAvatarError.value = null;
-    setAvatarHash.value = null;
+    resetStates();
     setAvatarIsPending.value = true;
 
     setAvatarHash.value = await setAvatar(tokenAddress.value, tokenId.value);
 
-    const result = await waitForTransactionReceipt(config, {
-      confirmations: 1,
-      hash: setAvatarHash.value
-    });
+    const hash = setAvatarHash.value;
 
-    console.log(result);
+    await waitForTransactionReceipt(config, {
+      confirmations: 2,
+      hash
+    });
 
     setAvatarIsPending.value = false;
 
-    await updateAvatarInfo();
+    updateAvatarInfo();
   } catch (error) {
     setAvatarError.value = error;
     setAvatarIsPending.value = false;

@@ -16,6 +16,9 @@
                 <component :is="chain.icon" class="w-4 h-4" />
               </div>
               <span>{{ chain.name }}</span>
+              <template v-if="chain.id === selectedChain.id">
+                <div class="ml-auto w-2.5 h-2.5 bg-green-400 ring ring-green-400/10 rounded-full"></div>
+              </template>
             </div>
           </template>
         </div>
