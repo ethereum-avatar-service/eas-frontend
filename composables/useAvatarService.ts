@@ -5,8 +5,8 @@ import { config } from "~/config";
 import type { ComputedRef } from "vue";
 
 const contractAddresses: Record<number, string> = {
-  11155111: "0x3011c7F4096374c4a405bE272F0deCbe2E0d8611", // Sepolia
-  137: "0x02E51Eb5F6eeD7a5207cE6E3144977886Fcf90cb", // Polygon
+  11155111: "0xdCD59d96454D585B12Ef167c15c43D0BFF96DC3F", // Sepolia
+  137: "0xd9517Fa5223322e1bD731af127A7C51fd34c2222", // Polygon
 };
 
 export function useAvatarServiceContractAddress(): ComputedRef<string> {

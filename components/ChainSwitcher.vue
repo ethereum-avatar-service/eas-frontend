@@ -34,12 +34,12 @@ import Polygon from "~/components/icons/chains/Polygon.vue";
 import {useAccount, useSwitchChain} from "@wagmi/vue";
 
 const chains = [
-  {
-    name: "Ethereum",
-    id: 1,
-    class: "bg-blue-100 fill-blue-500",
-    icon: Ethereum
-  },
+  // {
+  //   name: "Ethereum",
+  //   id: 1,
+  //   class: "bg-blue-100 fill-blue-500",
+  //   icon: Ethereum
+  // },
   {
     name: "Sepolia",
     id: 11155111,

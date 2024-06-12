@@ -4,9 +4,13 @@
       <template v-if="isConnected">
         <template v-if="avatarInfo">
           <div class="flex flex-col items-center">
-            <div class="w-48 h-48 bg-neutral-100 outline outline-offset-4 outline-8 outline-blue-500 rounded-full shadow-[0px_0px_32px_16px] shadow-blue-500/20">
-              <img v-if="isImage" :src="src" class="w-full h-full object-cover rounded-full" />
-              <video v-else autoplay loop muted :src="src" class="w-full h-full object-cover rounded-full" />
+            <div class="w-48 h-48 flex items-center bg-neutral-100 outline outline-offset-4 outline-8 outline-blue-500 rounded-full shadow-[0px_0px_32px_16px] shadow-blue-500/20 overflow-hidden">
+              <template v-if="imageType === 'image'">
+                <img :src="imageLink" class="w-full" alt="" />
+              </template>
+              <template v-else-if="imageType === 'video'">
+                <video autoplay loop muted :src="imageLink" class="w-full h-full object-cover" />
+              </template>
             </div>
             <div class="mt-16 flex flex-col gap-2 text-center w-full">
               <label class="px-2 text-sm text-neutral-400/75">Token Address</label>
@@ -15,19 +19,19 @@
               <div class="p-4 bg-neutral-100 text-neutral-400/75 rounded-2xl truncate">{{ avatarInfo.avatar?.tokenId }}</div>
               <div class="p-4 rounded-2xl truncate" :class="{ 'bg-green-100 text-green-500': avatarInfo.owned, 'bg-red-100 text-red-500': !avatarInfo.owned }">{{ avatarInfo.owned ? "Owned" : "Not owned" }}</div>
               <label class="mt-2 px-2 text-sm text-neutral-400/75">Collection</label>
-              <div class="p-4 flex flex-col gap-2 border-2 border-neutral-100 rounded-2xl truncate">
+              <div class="p-4 flex flex-col gap-2 text-sm border-2 border-neutral-100 rounded-2xl truncate">
                 <div class="flex items-center gap-2">
-                  <span class="text-sm text-neutral-400/75">NAME:</span>
+                  <span class="text-neutral-400/75">Name:</span>
                   <span>Nyan Cat (Official)</span>
                 </div>
                 <hr class="h-[2px] bg-neutral-100 border-0">
                 <div class="flex items-center gap-2">
-                  <span class="text-sm text-neutral-400/75">WEBSITE:</span>
+                  <span class="text-neutral-400/75">Website:</span>
                   <a href="https://www.nyan.cat/" class="text-sky-500">nyan.cat</a>
                 </div>
                 <hr class="h-[2px] bg-neutral-100 border-0">
                 <div class="flex items-center gap-2">
-                  <span class="text-sm text-neutral-400/75">MARKET:</span>
+                  <span class="text-neutral-400/75">Market:</span>
                   <a href="https://opensea.io/collection/nyan-cat-official" class="text-sky-500">opensea.io/collection/nyan-cat-official</a>
                 </div>
               </div>
@@ -122,20 +126,20 @@ const { connect } = useConnect();
 const { address, isConnected, chainId, chain } = useAccount();
 const {setAvatar, getAvatarInfo} = useAvatarService();
 
+const IPFS_GATEWAY = "https://ipfs.io/ipfs/";
+
 const avatarInfo = ref(null);
 const tokenAddress = ref("0x0000000000000000000000000000000000000000");
 const tokenId = ref(BigInt(0));
 const setAvatarHash = ref(null);
 const setAvatarError = ref(null);
 const setAvatarIsPending = ref(false);
-
-// Placeholder
-const src = "https://ipfs.io/ipfs/Qmcg8f4F9cig2JWXunxJcdBe58Q5myYXPmGfuMn1TVeswD/nft.mp4";
+const imageLink = ref("");
+const imageType = ref("image");
 
 onMounted(() => {
   if (isConnected) {
     updateAvatarInfo();
-    console.log(chain.value.blockExplorers.default.url);
   } else {
     connectWallet();
     updateAvatarInfo();
@@ -144,10 +148,6 @@ onMounted(() => {
 
 watch(chainId, () => {
   resetStates();
-  updateAvatarInfo();
-});
-
-watch(setAvatarIsPending, () => {
   updateAvatarInfo();
 });
 
@@ -161,8 +161,8 @@ const isValidTokenAddress = computed(() => {
 
 const isSetAvatarDisabled = computed(() => {
   const pending = setAvatarIsPending?.value || false;
-  const tad = avatarInfo?.value?.avatar?.tokenAddress || "";
-  const tid = avatarInfo?.value?.avatar?.tokenId || "";
+  const tad = avatarInfo.value?.avatar?.tokenAddress || "";
+  const tid = avatarInfo.value?.avatar?.tokenId || "";
 
   return (
       pending ||
@@ -171,13 +171,42 @@ const isSetAvatarDisabled = computed(() => {
   );
 });
 
-const isImage = computed(() => {
-  return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(src);
-});
+async function updateImageLink() {
+  let uri = avatarInfo.value?.uri ?? "";
+
+  if (!uri) return;
+
+  if (uri.startsWith("ipfs://")) {
+    uri = uri.replace("ipfs://", IPFS_GATEWAY);
+  }
+
+  const response = await fetch(uri);
+  const data = await response.json();
+
+  let src = data.image;
+
+  if (src.startsWith("ipfs://")) {
+    src = src.replace("ipfs://", IPFS_GATEWAY);
+  }
+
+  imageLink.value = src;
+  imageType.value = "image";
+
+  const prefetchResponse = await fetch(src);
+  const contentType = prefetchResponse.headers['Content-Type'];
+
+  if (contentType.startsWith('image/')) {
+    imageType.value = "image";
+  } else if (contentType.startsWith('video/')) {
+    imageType.value = "video";
+  }
+}
 
 function resetStates() {
   setAvatarError.value = null;
   setAvatarHash.value = null;
+  imageLink.value = "";
+  imageType.value = "image";
 }
 
 function connectWallet() {
@@ -211,6 +240,7 @@ async function handleSetAvatar() {
 async function updateAvatarInfo() {
   try {
     avatarInfo.value = await getAvatarInfo();
+    updateImageLink();
   } catch(error) {
     console.error("Error getting avatar:", error);
   }
