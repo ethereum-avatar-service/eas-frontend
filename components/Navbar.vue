@@ -2,7 +2,7 @@
   <header class="p-5 h-[72px] fixed w-full bg-neutral-50 border-b border-neutral-100">
     <div class="h-full flex items-center">
       <div class="hidden md:flex items-center gap-8">
-        <h1 class="font-bold text-xl text-blue-500">ethereum avatar service</h1>
+        <h1 class="font-bold text-xl">ethereum avatar service</h1>
         <div class="flex items-center gap-2">
           <NuxtLink to="/" class="link" active-class="link-active">My avatar</NuxtLink>
           <NuxtLink class="link">Verified collections</NuxtLink>
@@ -13,7 +13,7 @@
       <div class="ml-auto px-2 flex items-center gap-1">
         <template v-if="isConnected && address">
           <ChainSwitcher />
-          <button disabled class="px-3 h-8 rounded-full duration-300">{{ `${address.slice(0, 6)}...${address.slice(38, 42)}` }}</button>
+          <div class="px-3 h-8 flex justify-center items-center rounded-full duration-300">{{ `${address.slice(0, 6)}...${address.slice(38, 42)}` }}</div>
           <button @click="disconnect" class="group px-2 h-8 flex justify-center gap-2 items-center hover:bg-red-100 text-red-400 hover:text-red-500 duration-300 rounded-full">
             <PowerIcon class="w-5 h-5" />
             <span class="pr-1 hidden group-hover:block overflow-hidden">Disconnect</span>

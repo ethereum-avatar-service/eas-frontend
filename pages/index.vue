@@ -52,7 +52,7 @@
         <hr class="h-[2px] bg-neutral-100 border-0">
       </template>
       <div class="flex flex-col gap-6">
-        <p class="px-2 text-neutral-500">Set one of your NFTs as the avatar for your wallet address. The NFT must be held in the same wallet.</p>
+        <p class="px-2 text-neutral-500">You can set one of your NFTs as the avatar for your wallet address. To do this, the NFT must be held in the same wallet and must have a token URI that points to an IPFS source containing an "image" field.</p>
         <div class="flex flex-col gap-2">
           <label class="px-2 text-sm text-neutral-400/75">Token Address</label>
           <input :disabled="setAvatarIsPending" v-model="tokenAddress" type="text" placeholder="Token Address" class="input"/>
