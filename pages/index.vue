@@ -58,7 +58,7 @@
         <template v-if="setAvatarHash">
           <div class="flex flex-col gap-6">
             <div class="p-4 flex justify-center items-center gap-2">
-              <span>Transaction:</span>
+              <span class="text-neutral-400/75">Transaction:</span>
               <a :href="`https://sepolia.etherscan.io/tx/${setAvatarHash}`" target="_blank" class="text-blue-500 rounded-full">{{ setAvatarHash.slice(0, 14) }}</a>
             </div>
             <template v-if="setAvatarIsPending">
@@ -70,13 +70,13 @@
             <template v-else-if="setAvatarError">
               <div class="p-4 flex justify-center items-center gap-2 bg-red-100 text-red-500 rounded-2xl">
                 <span>Error</span>
-                <XMarkIcon class="w-5 h-5 fill-red-500 text-red-400" />
+                <XMarkIcon class="w-5 h-5 text-red-500" />
               </div>
             </template>
             <template v-else>
               <div class="p-4 flex justify-center items-center gap-2 bg-green-100 text-green-500 rounded-2xl">
                 <span>Confirmed</span>
-                <CheckIcon class="w-5 h-5 fill-green-500 text-green-400" />
+                <CheckIcon class="w-5 h-5 text-green-500" />
               </div>
             </template>
           </div>
@@ -93,29 +93,36 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {useAccount, useConnect} from "@wagmi/vue";
+import {useAccount, useConnect, useWaitForTransactionReceipt} from "@wagmi/vue";
 import {injected} from "@wagmi/vue/connectors";
 import {isAddress, zeroAddress} from "viem";
 import {CheckBadgeIcon, CheckIcon, XMarkIcon} from "@heroicons/vue/20/solid";
 import Loading from "~/components/icons/Loading.vue";
+import { waitForTransactionReceipt } from "@wagmi/core";
+import { config } from "~/config";
 
 const { connect } = useConnect();
 const { address, isConnected, chainId } = useAccount();
-
-const {
-  setAvatar,
-  setAvatarHash,
-  setAvatarError,
-  setAvatarIsPending,
-  getAvatarInfo
-} = useAvatarService();
+const {setAvatar, getAvatarInfo} = useAvatarService();
 
 const avatarInfo = ref(null);
 const tokenAddress = ref("0x0000000000000000000000000000000000000000");
 const tokenId = ref(BigInt(0));
+const setAvatarHash = ref(null);
+const setAvatarError = ref(null);
+const setAvatarIsPending = ref(false);
 
 // Placeholder
 const src = "https://ipfs.io/ipfs/Qmcg8f4F9cig2JWXunxJcdBe58Q5myYXPmGfuMn1TVeswD/nft.mp4";
+
+onMounted(() => {
+  if (isConnected) {
+    updateAvatarInfo();
+  } else {
+    connectWallet();
+    updateAvatarInfo();
+  }
+});
 
 watch(chainId, () => {
   updateAvatarInfo();
@@ -124,14 +131,6 @@ watch(chainId, () => {
 watch(setAvatarIsPending, () => {
   updateAvatarInfo();
 });
-
-async function updateAvatarInfo() {
-  try {
-    avatarInfo.value = await getAvatarInfo();
-  } catch(err) {
-
-  }
-}
 
 const isValidTokenAddress = computed(() => {
   return !!tokenAddress.value && isAddress(tokenAddress.value);
@@ -153,32 +152,42 @@ const isImage = computed(() => {
   return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(src);
 });
 
-function handleSetAvatar() {
-  try {
-    let tokenAddr = tokenAddress.value;
-
-    if (!tokenAddr) tokenAddr = zeroAddress;
-
-    setAvatar(tokenAddr, tokenId.value);
-
-    updateAvatarInfo();
-  } catch (error) {
-    console.error("Error setting avatar:", error);
-  }
-}
-
 function connectWallet() {
   connect({ connector: injected() });
 }
 
-onMounted(() => {
-  if (isConnected) {
-    updateAvatarInfo();
-  } else {
-    connectWallet();
-    updateAvatarInfo();
+async function handleSetAvatar() {
+  try {
+    setAvatarError.value = null;
+    setAvatarHash.value = null;
+    setAvatarIsPending.value = true;
+
+    setAvatarHash.value = await setAvatar(tokenAddress.value, tokenId.value);
+
+    const result = await waitForTransactionReceipt(config, {
+      confirmations: 1,
+      hash: setAvatarHash.value
+    });
+
+    console.log(result);
+
+    setAvatarIsPending.value = false;
+
+    await updateAvatarInfo();
+  } catch (error) {
+    setAvatarError.value = error;
+    setAvatarIsPending.value = false;
+    console.error("Error setting avatar:", error);
   }
-});
+}
+
+async function updateAvatarInfo() {
+  try {
+    avatarInfo.value = await getAvatarInfo();
+  } catch(error) {
+    console.error("Error getting avatar:", error);
+  }
+}
 </script>
 
 <style scoped>

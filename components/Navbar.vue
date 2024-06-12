@@ -13,7 +13,7 @@
         <template v-if="isConnected && address">
           <ChainSwitcher />
           <button disabled class="px-3 h-8 rounded-full duration-300">{{ `${address.slice(0, 6)}...${address.slice(38, 42)}` }}</button>
-          <button @click="disconnect" class="group px-2 h-8 flex justify-center gap-2 items-center hover:bg-red-100 text-sm text-red-400 hover:text-red-500 duration-300 rounded-full">
+          <button @click="disconnect" class="group px-2 h-8 flex justify-center gap-2 items-center hover:bg-red-100 text-red-400 hover:text-red-500 duration-300 rounded-full">
             <PowerIcon class="w-5 h-5" />
             <span class="pr-1 hidden group-hover:block overflow-hidden">Disconnect</span>
           </button>

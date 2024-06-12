@@ -1,6 +1,6 @@
 import { useAccount, useWriteContract } from "@wagmi/vue";
 import { abi } from "~/abi/AvatarService";
-import { readContract } from "@wagmi/core";
+import { writeContract, readContract } from "@wagmi/core";
 import { config } from "~/config";
 import type { ComputedRef } from "vue";
 
@@ -19,17 +19,10 @@ export function useAvatarService() {
   const { address } = useAccount();
   const contractAddress = useAvatarServiceContractAddress();
 
-  const {
-    data: setAvatarHash,
-    error: setAvatarError,
-    isPending: setAvatarIsPending,
-    writeContract
-  } = useWriteContract();
-
-  function setAvatar(tokenAddress: string, tokenId: BigInt) {
+  async function setAvatar(tokenAddress: string, tokenId: BigInt) {
     if (!address.value || !contractAddress.value) return;
 
-    writeContract({
+    return await writeContract(config, {
       abi,
       account: address.value,
       address: contractAddress.value,
@@ -54,9 +47,6 @@ export function useAvatarService() {
 
   return {
     setAvatar,
-    setAvatarHash,
-    setAvatarError,
-    setAvatarIsPending,
     getAvatarInfo
   };
 }
