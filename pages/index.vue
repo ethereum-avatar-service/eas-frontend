@@ -59,7 +59,7 @@
           <div class="flex flex-col gap-6">
             <div class="p-4 flex justify-center items-center gap-2">
               <span class="text-neutral-400/75">Transaction:</span>
-              <a :href="`https://sepolia.etherscan.io/tx/${setAvatarHash}`" target="_blank" class="text-blue-500 rounded-full">{{ setAvatarHash.slice(0, 14) }}</a>
+              <a :href="`${blockExplorer}/tx/${setAvatarHash}`" target="_blank" class="text-blue-500 rounded-full">{{ setAvatarHash.slice(0, 14) }}</a>
             </div>
             <template v-if="setAvatarIsPending">
               <div class="p-4 flex justify-center items-center gap-2 bg-neutral-100 text-neutral-500 rounded-2xl">
@@ -95,14 +95,14 @@
 import {onMounted, ref} from "vue";
 import {useAccount, useConnect} from "@wagmi/vue";
 import {injected} from "@wagmi/vue/connectors";
-import {isAddress, zeroAddress} from "viem";
+import {isAddress} from "viem";
 import {CheckBadgeIcon, CheckIcon, XMarkIcon} from "@heroicons/vue/20/solid";
 import Loading from "~/components/icons/Loading.vue";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { config } from "~/config";
 
 const { connect } = useConnect();
-const { address, isConnected, chainId } = useAccount();
+const { address, isConnected, chainId, chain } = useAccount();
 const {setAvatar, getAvatarInfo} = useAvatarService();
 
 const avatarInfo = ref(null);
@@ -118,6 +118,7 @@ const src = "https://ipfs.io/ipfs/Qmcg8f4F9cig2JWXunxJcdBe58Q5myYXPmGfuMn1TVeswD
 onMounted(() => {
   if (isConnected) {
     updateAvatarInfo();
+    console.log(chain.value.blockExplorers.default.url);
   } else {
     connectWallet();
     updateAvatarInfo();
@@ -131,6 +132,10 @@ watch(chainId, () => {
 
 watch(setAvatarIsPending, () => {
   updateAvatarInfo();
+});
+
+const blockExplorer = computed(() => {
+  return chain.value?.blockExplorers?.default?.url ?? "https://etherscan.io";
 });
 
 const isValidTokenAddress = computed(() => {
