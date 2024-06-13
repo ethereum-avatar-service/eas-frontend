@@ -4,7 +4,7 @@
       <template v-if="isConnected">
         <template v-if="avatarInfo">
           <div class="flex flex-col items-center">
-            <div class="w-48 h-48 flex items-center bg-neutral-100 outline outline-offset-4 outline-8 outline-blue-500 rounded-full shadow-[0px_0px_32px_16px] shadow-blue-500/20 overflow-hidden">
+            <div class="w-64 h-64 flex items-center bg-neutral-100 rounded-full shadow-[0px_0px_32px_8px] shadow-neutral-200 overflow-hidden">
               <template v-if="imageType === 'image'">
                 <img :src="imageLink" class="w-full" alt="" />
               </template>
@@ -18,30 +18,42 @@
               <label class="mt-2 px-2 text-sm text-neutral-400/75">Token ID</label>
               <div class="p-4 bg-neutral-100 text-neutral-400/75 rounded-2xl truncate">{{ avatarInfo.avatar?.tokenId }}</div>
               <div class="p-4 rounded-2xl truncate" :class="{ 'bg-green-100 text-green-500': avatarInfo.owned, 'bg-red-100 text-red-500': !avatarInfo.owned }">{{ avatarInfo.owned ? "Owned" : "Not owned" }}</div>
-              <label class="mt-2 px-2 text-sm text-neutral-400/75">Collection</label>
-              <div class="p-4 flex flex-col gap-2 text-sm border-2 border-neutral-100 rounded-2xl truncate">
-                <div class="flex items-center gap-2">
-                  <span class="text-neutral-400/75">Name:</span>
-                  <span>Nyan Cat (Official)</span>
+              <template v-if="avatarMetadata?.collection?.name">
+                <template v-if="avatarMetadata?.collection?.verified">
+                  <VerifiedNotice />
+                </template>
+                <template v-else>
+                  <UnverifiedNotice />
+                </template>
+                <label class="mt-2 px-2 text-sm text-neutral-400/75">Collection</label>
+                <div class="p-4 flex flex-col gap-2 text-sm border-2 border-neutral-100 rounded-2xl truncate">
+                  <div class="flex items-center gap-2">
+                    <span class="text-neutral-400/75">Name:</span>
+                    <span class="truncate">{{ avatarMetadata?.collection?.name }}</span>
+                  </div>
+                  <hr class="h-[2px] bg-neutral-100 border-0">
+                  <div class="flex items-center gap-2">
+                    <span class="text-neutral-400/75">Author:</span>
+                    <span class="truncate">{{ avatarMetadata?.collection?.author }}</span>
+                  </div>
+                  <hr class="h-[2px] bg-neutral-100 border-0">
+                  <div class="flex items-center gap-2">
+                    <span class="text-neutral-400/75">Website:</span>
+                    <a :href="avatarMetadata?.collection?.website" class="truncate text-sky-500">{{ avatarMetadata?.collection?.website.replace("https://", "") }}</a>
+                  </div>
+                  <hr class="h-[2px] bg-neutral-100 border-0">
+                  <div class="flex items-center gap-2">
+                    <span class="text-neutral-400/75">Opensea:</span>
+                    <a :href="avatarMetadata?.collection?.opensea" class="truncate text-sky-500">{{ avatarMetadata?.collection?.opensea.replace("https://", "") }}</a>
+                  </div>
                 </div>
-                <hr class="h-[2px] bg-neutral-100 border-0">
-                <div class="flex items-center gap-2">
-                  <span class="text-neutral-400/75">Website:</span>
-                  <a href="https://www.nyan.cat/" class="text-sky-500">nyan.cat</a>
-                </div>
-                <hr class="h-[2px] bg-neutral-100 border-0">
-                <div class="flex items-center gap-2">
-                  <span class="text-neutral-400/75">Market:</span>
-                  <a href="https://opensea.io/collection/nyan-cat-official" class="text-sky-500">opensea.io/collection/nyan-cat-official</a>
-                </div>
-              </div>
-              <div class="p-4 flex justify-center items-center gap-2">
-                <CheckBadgeIcon class="w-5 h-5 text-green-400" />
-                <span class="text-sm text-neutral-400/75">Collection is verified</span>
-              </div>
-              <div class="p-4 border-2 border-neutral-100 rounded-2xl">
-                <p class="text-sm text-neutral-400/75">To combat fraudulent collections, such as copycats, EAS has implemented a collection verification system.</p>
-              </div>
+              </template>
+              <template v-else-if="avatarInfo.avatar?.tokenAddress !== zeroAddress">
+                <UnverifiedNotice />
+              </template>
+              <template v-else>
+                <VerifiedNotice />
+              </template>
             </div>
           </div>
         </template>
@@ -116,20 +128,24 @@
 import {onMounted, ref} from "vue";
 import {useAccount, useConnect} from "@wagmi/vue";
 import {injected} from "@wagmi/vue/connectors";
-import {isAddress} from "viem";
-import {CheckBadgeIcon, CheckIcon, XMarkIcon} from "@heroicons/vue/20/solid";
+import {isAddress, zeroAddress} from "viem";
+import {CheckIcon, XMarkIcon} from "@heroicons/vue/20/solid";
 import Loading from "~/components/icons/Loading.vue";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { config } from "~/config";
+import VerifiedNotice from "~/components/collection/VerifiedNotice.vue";
+import UnverifiedNotice from "~/components/collection/UnverifiedNotice.vue";
 
 const { connect } = useConnect();
 const { address, isConnected, chainId, chain } = useAccount();
 const {setAvatar, getAvatarInfo} = useAvatarService();
+const {getAvatarForAddress} = useAvatarServiceApi();
 
 const IPFS_GATEWAY = "https://ipfs.io/ipfs/";
 
 const avatarInfo = ref(null);
-const tokenAddress = ref("0x0000000000000000000000000000000000000000");
+const avatarMetadata = ref(null);
+const tokenAddress = ref(zeroAddress);
 const tokenId = ref(BigInt(0));
 const setAvatarHash = ref(null);
 const setAvatarError = ref(null);
@@ -240,6 +256,13 @@ async function handleSetAvatar() {
 async function updateAvatarInfo() {
   try {
     avatarInfo.value = await getAvatarInfo();
+
+    const apiRes = await getAvatarForAddress(address.value);
+
+    const chainName = chain.value.name.toLowerCase();
+
+    avatarMetadata.value = apiRes["networks"][chainName]["avatar_metadata"];
+
     updateImageLink();
   } catch(error) {
     console.error("Error getting avatar:", error);

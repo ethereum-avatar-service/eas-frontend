@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      SEPOLIA_AVATAR_SERVICE: process.env.SEPOLIA_AVATAR_SERVICE
+      EAS_API: process.env.EAS_API
     }
   },
   css: ["~/assets/css/main.css"],

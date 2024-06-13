@@ -2,10 +2,10 @@
   <header class="p-5 h-[72px] fixed w-full bg-neutral-50 border-b border-neutral-100">
     <div class="h-full flex items-center">
       <div class="hidden md:flex items-center gap-8">
-        <h1 class="font-bold text-xl">ethereum avatar service</h1>
+        <h1 class="font-bold text-xl text-sky-500">ethereum avatar service</h1>
         <div class="flex items-center gap-2">
           <NuxtLink to="/" class="link" active-class="link-active">My avatar</NuxtLink>
-          <NuxtLink class="link">Verified collections</NuxtLink>
+          <NuxtLink to="whitelist" class="link">Verified collections</NuxtLink>
           <NuxtLink class="link">Docs</NuxtLink>
         </div>
       </div>
