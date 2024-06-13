@@ -6,7 +6,7 @@
         <div class="flex items-center gap-2">
           <NuxtLink to="/" class="link" active-class="link-active">My avatar</NuxtLink>
           <NuxtLink to="whitelist" class="link">Verified collections</NuxtLink>
-          <NuxtLink class="link">Docs</NuxtLink>
+          <NuxtLink to="docs" class="link">Docs</NuxtLink>
         </div>
       </div>
       <h1 class="md:hidden font-bold text-2xl text-blue-400">eas</h1>
