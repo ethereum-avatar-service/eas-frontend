@@ -48,11 +48,11 @@
                   </div>
                 </div>
               </template>
-              <template v-else-if="avatarInfo.avatar?.tokenAddress !== zeroAddress">
-                <UnverifiedNotice />
+              <template v-else-if="avatarInfo.avatar?.tokenAddress === zeroAddress">
+                <VerifiedNotice />
               </template>
               <template v-else>
-                <VerifiedNotice />
+                <UnknownNotice />
               </template>
             </div>
           </div>
@@ -135,6 +135,7 @@ import { waitForTransactionReceipt } from "@wagmi/core";
 import { config } from "~/config";
 import VerifiedNotice from "~/components/collection/VerifiedNotice.vue";
 import UnverifiedNotice from "~/components/collection/UnverifiedNotice.vue";
+import UnknownNotice from "~/components/collection/UnknownNotice.vue";
 
 const { connect } = useConnect();
 const { address, isConnected, chainId, chain } = useAccount();
@@ -158,11 +159,10 @@ onMounted(() => {
     updateAvatarInfo();
   } else {
     connectWallet();
-    updateAvatarInfo();
   }
 });
 
-watch(chainId, () => {
+watch([chainId, isConnected], () => {
   resetStates();
   updateAvatarInfo();
 });
