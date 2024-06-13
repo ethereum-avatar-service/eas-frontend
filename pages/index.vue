@@ -164,7 +164,7 @@ onMounted(() => {
 
 watch([chainId, isConnected], () => {
   resetStates();
-  if (address.value) {
+  if (isConnected.value && address.value) {
     updateAvatarInfo();
   }
 });
