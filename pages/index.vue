@@ -155,7 +155,7 @@ const imageLink = ref("");
 const imageType = ref("image");
 
 onMounted(() => {
-  if (isConnected) {
+  if (isConnected.value && address.value) {
     updateAvatarInfo();
   } else {
     connectWallet();
@@ -164,7 +164,9 @@ onMounted(() => {
 
 watch([chainId, isConnected], () => {
   resetStates();
-  updateAvatarInfo();
+  if (address.value) {
+    updateAvatarInfo();
+  }
 });
 
 const blockExplorer = computed(() => {
