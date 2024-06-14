@@ -1,9 +1,6 @@
 <template>
   <div class="py-8 lg:py-16">
     <div class="max-w-7xl mx-auto flex flex-col gap-12">
-      <div class="flex flex-col gap-3">
-        <p>Work in progress..</p>
-      </div>
       <div class="flex flex-col gap-6">
         <h1 class="font-medium text-2xl">Usage</h1>
         <div class="flex flex-col gap-6">
@@ -33,6 +30,10 @@
         <h1 class="font-medium text-2xl">API</h1>
         <a href="https://api.eas.tools/whitelist" target="_blank" class="text-sky-500">api.eas.tools/whitelist</a>
         <a href="https://api.eas.tools/avatar/0x91537C44fF0fE61E8142976A94a3295E17Db82F3" target="_blank" class="text-sky-500">api.eas.tools/avatar/{address}</a>
+      </div>
+      <div class="flex flex-col gap-3">
+        <h1 class="font-medium text-2xl">GitHub</h1>
+        <a href="https://github.com/orgs/ethereum-avatar-service" target="_blank" class="text-sky-500">github.com/orgs/ethereum-avatar-service</a>
       </div>
     </div>
   </div>
