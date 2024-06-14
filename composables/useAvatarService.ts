@@ -5,6 +5,7 @@ import { config } from "~/config";
 import type { ComputedRef } from "vue";
 
 const contractAddresses: Record<number, string> = {
+  1: "0x9AfDC4097DCDc49Aac58D4aaEa353B3a8ec60F1d", // Mainnet
   11155111: "0xdCD59d96454D585B12Ef167c15c43D0BFF96DC3F", // Sepolia
   137: "0xd9517Fa5223322e1bD731af127A7C51fd34c2222", // Polygon
 };
