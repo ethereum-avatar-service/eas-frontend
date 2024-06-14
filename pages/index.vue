@@ -71,9 +71,6 @@ import {CheckIcon, XMarkIcon} from "@heroicons/vue/20/solid";
 import Loading from "~/components/icons/Loading.vue";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { config } from "~/config";
-import VerifiedNotice from "~/components/collection/VerifiedNotice.vue";
-import UnverifiedNotice from "~/components/collection/UnverifiedNotice.vue";
-import UnknownNotice from "~/components/collection/UnknownNotice.vue";
 import AvatarViewer from "~/components/AvatarViewer.vue";
 
 const { connect } = useConnect();
@@ -170,7 +167,7 @@ async function updateAvatarInfo() {
 
     const chainName = chain.value.name.toLowerCase();
 
-    avatarMetadata.value = apiRes["networks"][chainName]["avatar_metadata"];
+    avatarMetadata.value = apiRes["networks"][chainName]["flat"]["avatar_metadata"];
 
     let src = avatarMetadata.value["image"];
 
