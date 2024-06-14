@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "build": "NUXT_PUBLIC_EAS_API=https://api.eas.tools nuxt build",
     "dev": "nuxt dev --port 3001",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
