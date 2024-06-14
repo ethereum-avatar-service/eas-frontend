@@ -129,7 +129,6 @@ function resetStates() {
   setAvatarError.value = null;
   setAvatarHash.value = null;
   imageLink.value = "";
-  imageType.value = "image";
 }
 
 function connectWallet() {
