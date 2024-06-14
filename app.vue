@@ -1,14 +1,16 @@
 <template>
-  <div class="text-[0.95rem]">
+  <div class="text-[0.95rem] min-h-screen flex flex-col">
     <Navbar />
-    <div class="px-4 md:px-9 pt-[72px]">
+    <div class="px-4 md:px-9 pt-[72px] flex-grow">
       <NuxtPage />
     </div>
+    <Footer />
   </div>
 </template>
 
 <script setup>
 import Navbar from "~/components/Navbar.vue";
+import Footer from "~/components/Footer.vue";
 
 useHead({
   title: "Ethereum Avatar Service",
