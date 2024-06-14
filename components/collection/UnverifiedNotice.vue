@@ -10,7 +10,7 @@ import {XMarkIcon} from "@heroicons/vue/20/solid";
       <span class="text-sm text-neutral-400/75">Collection is not verified</span>
     </div>
     <div class="p-4 border-2 border-neutral-100 rounded-2xl">
-      <p class="text-sm text-neutral-400/75">To combat fraudulent collections, such as copycats, EAS has implemented a collection verification system.</p>
+      <p class="text-sm text-neutral-400/75">To combat fraudulent collections, such as copycats, EAS has implemented a collection verification system. Read <a href="https://github.com/ethereum-avatar-service/eas-api-whitelist/blob/main/README.md" target="_blank" class="text-sky-500">here</a> how to submit a collection for verification.</p>
     </div>
   </div>
 </template>

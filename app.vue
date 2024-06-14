@@ -11,6 +11,10 @@
 import Navbar from "~/components/Navbar.vue";
 
 useHead({
+  title: "Ethereum Avatar Service",
+  link: [
+    { rel: "icon", type: "image/png", href: "/favicon.png" }
+  ],
   bodyAttrs: {
     class: "open-sans bg-neutral-50 text-neutral-950",
   },

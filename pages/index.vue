@@ -1,15 +1,15 @@
 <template>
-  <div class="py-16">
+  <div class="py-8 lg:py-16">
     <div class="max-w-lg mx-auto flex flex-col gap-12">
       <template v-if="isConnected">
         <template v-if="avatarInfo">
           <div class="flex flex-col items-center">
-            <div class="hex w-72 h-72 flex items-center bg-neutral-50 shadow-[0px_0px_16px_8px] shadow-neutral-500 overflow-hidden">
+            <div class="hex w-72 h-72 flex items-center bg-sky-500 overflow-hidden">
               <template v-if="imageType === 'image'">
                 <img :src="imageLink" class="object-cover" alt="" />
               </template>
               <template v-else-if="imageType === 'video'">
-                <video autoplay loop muted :src="imageLink" class="w-full h-full object-cover" />
+                <video autoplay loop muted :src="imageLink" class="object-cover" />
               </template>
             </div>
             <div class="mt-16 flex flex-col gap-2 text-center w-full">
@@ -277,9 +277,5 @@ async function updateAvatarInfo() {
 <style scoped>
 .input {
   @apply bg-neutral-100 p-4 placeholder-neutral-300 rounded-2xl w-full;
-}
-
-.hex {
-  clip-path: polygon(45% 1.33975%, 46.5798% 0.60307%, 48.26352% 0.15192%, 50% 0%, 51.73648% 0.15192%, 53.4202% 0.60307%, 55% 1.33975%, 89.64102% 21.33975%, 91.06889% 22.33956%, 92.30146% 23.57212%, 93.30127% 25%, 94.03794% 26.5798%, 94.48909% 28.26352%, 94.64102% 30%, 94.64102% 70%, 94.48909% 71.73648%, 94.03794% 73.4202%, 93.30127% 75%, 92.30146% 76.42788%, 91.06889% 77.66044%, 89.64102% 78.66025%, 55% 98.66025%, 53.4202% 99.39693%, 51.73648% 99.84808%, 50% 100%, 48.26352% 99.84808%, 46.5798% 99.39693%, 45% 98.66025%, 10.35898% 78.66025%, 8.93111% 77.66044%, 7.69854% 76.42788%, 6.69873% 75%, 5.96206% 73.4202%, 5.51091% 71.73648%, 5.35898% 70%, 5.35898% 30%, 5.51091% 28.26352%, 5.96206% 26.5798%, 6.69873% 25%, 7.69854% 23.57212%, 8.93111% 22.33956%, 10.35898% 21.33975%);
 }
 </style>

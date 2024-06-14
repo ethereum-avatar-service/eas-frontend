@@ -1,5 +1,5 @@
 <template>
-  <div class="py-16">
+  <div class="py-8 lg:py-16">
     <div class="max-w-7xl mx-auto flex flex-col gap-12">
       <div class="flex flex-col gap-3">
         <h1 class="font-medium text-2xl">Submit collection for verification</h1>
