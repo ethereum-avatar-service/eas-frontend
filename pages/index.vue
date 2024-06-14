@@ -157,8 +157,6 @@ const imageType = ref("image");
 onMounted(() => {
   if (isConnected.value && address.value) {
     updateAvatarInfo();
-  } else {
-    connectWallet();
   }
 });
 
