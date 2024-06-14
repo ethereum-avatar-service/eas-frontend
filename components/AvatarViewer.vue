@@ -12,13 +12,16 @@
         <template v-if="avatarInfo.avatar?.tokenAddress !== zeroAddress">
           <div class="p-4 rounded-2xl truncate" :class="{ 'bg-green-100 text-green-500': avatarInfo.owned, 'bg-red-100 text-red-500': !avatarInfo.owned }">{{ avatarInfo.owned ? "Owned" : "Not owned" }}</div>
         </template>
+        <template v-if="avatarMetadata?.collection?.verified">
+          <VerifiedNotice />
+        </template>
+        <template v-else-if="avatarMetadata">
+          <UnverifiedNotice />
+        </template>
+        <template v-else>
+          <UnknownNotice />
+        </template>
         <template v-if="avatarMetadata?.collection?.name">
-          <template v-if="avatarMetadata?.collection?.verified">
-            <VerifiedNotice />
-          </template>
-          <template v-else>
-            <UnverifiedNotice />
-          </template>
           <label class="mt-2 px-2 text-sm text-neutral-400/75">Collection</label>
           <div class="p-4 flex flex-col gap-2 text-sm border-2 border-neutral-100 rounded-2xl truncate">
             <div class="flex items-center gap-2">
@@ -41,9 +44,6 @@
               <a :href="avatarMetadata?.collection?.opensea" class="truncate text-sky-500">{{ avatarMetadata?.collection?.opensea.replace("https://", "") }}</a>
             </div>
           </div>
-        </template>
-        <template v-else-if="avatarInfo.avatar?.tokenAddress !== zeroAddress">
-          <UnknownNotice />
         </template>
       </div>
     </div>
