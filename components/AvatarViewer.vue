@@ -1,8 +1,15 @@
 <template>
   <template v-if="avatarInfo">
     <div class="flex flex-col items-center">
-      <div class="hex w-72 h-72 flex items-center bg-sky-500 overflow-hidden">
-        <img :src="imageLink" class="object-cover" alt="" />
+      <div class="relative">
+<!--        <template v-if="imageLink">-->
+<!--          <div class="absolute top-0 w-72 h-72 flex items-center rounded-full overflow-hidden blur-2xl opacity-50">-->
+<!--            <img :src="imageLink" class="object-cover" alt="" />-->
+<!--          </div>-->
+<!--        </template>-->
+        <div class="hex w-72 h-72 flex items-center bg-sky-500 overflow-hidden">
+          <img :src="imageLink" class="object-cover" alt="" />
+        </div>
       </div>
       <div class="mt-16 flex flex-col gap-2 text-center w-full">
         <label class="px-2 text-sm text-neutral-400/75">Token Address</label>

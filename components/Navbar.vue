@@ -1,7 +1,7 @@
 <template>
   <header class="px-4 md:px-9 py-5 h-[72px] fixed w-full bg-neutral-50 border-b border-neutral-100 z-10">
     <div class="h-full flex items-center">
-      <div class="hidden lg:flex items-center gap-8">
+      <div class="hidden xl:flex items-center gap-8">
         <div class="flex items-center gap-2">
           <Logo class="w-7 h-7" />
           <h1 class="pb-1 font-semibold text-xl text-sky-500">ethereum avatar service</h1>
@@ -13,7 +13,7 @@
           <NuxtLink replace to="/docs" class="link" active-class="link-active">Docs</NuxtLink>
         </div>
       </div>
-      <div class="flex lg:hidden items-center gap-2">
+      <div class="flex xl:hidden items-center gap-2">
         <div class="flex items-center gap-2">
           <Logo class="w-7 h-7" />
           <span class="pb-1 font-semibold text-3xl text-sky-500">eas</span>
