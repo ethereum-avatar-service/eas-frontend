@@ -1,6 +1,6 @@
 <template>
   <div class="py-16">
-    <div class="px-4 mx-auto flex flex-col gap-12">
+    <div class="max-w-7xl mx-auto flex flex-col gap-12">
       <div class="flex flex-col gap-3">
         <h1 class="font-medium text-2xl">Submit collection for verification</h1>
         <p>Please read <a href="https://github.com/ethereum-avatar-service/eas-api-whitelist/blob/main/README.md" target="_blank" class="text-sky-500">here</a> on how to get a collection verified.</p>

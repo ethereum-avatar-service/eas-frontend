@@ -1,7 +1,7 @@
 <template>
-  <header class="p-5 h-[72px] fixed w-full bg-neutral-50 border-b border-neutral-100">
+  <header class="px-4 md:px-9 py-5 h-[72px] fixed w-full bg-neutral-50 border-b border-neutral-100">
     <div class="h-full flex items-center">
-      <div class="hidden md:flex items-center gap-8">
+      <div class="hidden lg:flex items-center gap-8">
         <h1 class="font-medium text-xl text-sky-500">ethereum avatar service</h1>
         <div class="flex items-center gap-2">
           <NuxtLink replace to="/" class="link" active-class="link-active">My avatar</NuxtLink>
@@ -9,7 +9,7 @@
           <NuxtLink replace to="/docs" class="link">Docs</NuxtLink>
         </div>
       </div>
-      <h1 class="md:hidden font-bold text-2xl text-blue-400">eas</h1>
+      <h1 class="lg:hidden font-medium text-xl text-sky-500">eas</h1>
       <div class="ml-auto px-2 flex items-center gap-1">
         <template v-if="isConnected && address">
           <ChainSwitcher />

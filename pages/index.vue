@@ -4,7 +4,7 @@
       <template v-if="isConnected">
         <template v-if="avatarInfo">
           <div class="flex flex-col items-center">
-            <div class="w-64 h-64 flex items-center bg-neutral-100 rounded-full shadow-[0px_0px_32px_8px] shadow-neutral-200 overflow-hidden">
+            <div class="w-64 h-64 flex items-center bg-neutral-50 border border-neutral-100 rounded-full shadow-[0px_0px_16px_8px] shadow-neutral-100 overflow-hidden">
               <template v-if="imageType === 'image'">
                 <img :src="imageLink" class="w-full" alt="" />
               </template>
@@ -188,33 +188,37 @@ const isSetAvatarDisabled = computed(() => {
 });
 
 async function updateImageLink() {
-  let uri = avatarInfo.value?.uri ?? "";
+  try {
+    let uri = avatarInfo.value?.uri ?? "";
 
-  if (!uri) return;
+    if (!uri) return;
 
-  if (uri.startsWith("ipfs://")) {
-    uri = uri.replace("ipfs://", IPFS_GATEWAY);
-  }
+    if (uri.startsWith("ipfs://")) {
+      uri = uri.replace("ipfs://", IPFS_GATEWAY);
+    }
 
-  const response = await fetch(uri);
-  const data = await response.json();
+    const response = await fetch(uri);
+    const data = await response.json();
 
-  let src = data.image;
+    let src = data.image;
 
-  if (src.startsWith("ipfs://")) {
-    src = src.replace("ipfs://", IPFS_GATEWAY);
-  }
+    if (src.startsWith("ipfs://")) {
+      src = src.replace("ipfs://", IPFS_GATEWAY);
+    }
 
-  imageLink.value = src;
-  imageType.value = "image";
-
-  const prefetchResponse = await fetch(src);
-  const contentType = prefetchResponse.headers['Content-Type'];
-
-  if (contentType.startsWith('image/')) {
+    imageLink.value = src;
     imageType.value = "image";
-  } else if (contentType.startsWith('video/')) {
-    imageType.value = "video";
+
+    const prefetchResponse = await fetch(src);
+    const contentType = prefetchResponse.headers['Content-Type'];
+
+    if (!contentType || contentType.startsWith('image/')) {
+      imageType.value = "image";
+    } else if (contentType.startsWith('video/')) {
+      imageType.value = "video";
+    }
+  } catch(error) {
+    console.error("Error updating image link:", error);
   }
 }
 
@@ -257,13 +261,13 @@ async function updateAvatarInfo() {
   try {
     avatarInfo.value = await getAvatarInfo();
 
+    updateImageLink();
+
     const apiRes = await getAvatarForAddress(address.value);
 
     const chainName = chain.value.name.toLowerCase();
 
     avatarMetadata.value = apiRes["networks"][chainName]["avatar_metadata"];
-
-    updateImageLink();
   } catch(error) {
     console.error("Error getting avatar:", error);
   }
