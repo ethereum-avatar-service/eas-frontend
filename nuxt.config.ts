@@ -5,10 +5,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      EAS_API: process.env.NUXT_PUBLIC_EAS_API ?? "https://api.eas.tools"
+      easApi: "https://api.eas.tools",
     }
   },
   css: ["~/assets/css/main.css"],
+  modules: ['@nuxtjs/tailwindcss'],
   postcss: {
     plugins: {
       tailwindcss: {},
