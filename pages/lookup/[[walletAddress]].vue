@@ -1,7 +1,14 @@
 <template>
   <div class="py-8 lg:py-16">
     <div class="max-w-lg mx-auto flex flex-col gap-12">
-      <h1 class="font-medium text-center text-2xl">Lookup avatar on {{ chain.name }}</h1>
+      <div class="flex justify-center items-center gap-3">
+        <h1 class="font-medium text-center text-2xl">Lookup avatar on</h1>
+        <select class="select" v-model="selectedChain">
+          <template v-for="chain in chains">
+            <option :value="chain">{{ chain.name }}</option>
+          </template>
+        </select>
+      </div>
       <div class="flex gap-2">
         <input class="input" type="text" placeholder="Search on address.." v-model="walletAddress">
         <button :disabled="!isSearchValid" @click="search" class="px-6 h-14 flex gap-2 flex-nowrap justify-center items-center bg-blue-500/20 hover:bg-blue-500/25 disabled:bg-neutral-100 font-medium text-blue-500 disabled:text-neutral-400/75 rounded-2xl duration-300">Go</button>
@@ -15,16 +22,16 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {useAccount, useConnect} from "@wagmi/vue";
+import {useAccount, useChains, useConnect} from "@wagmi/vue";
 import {isAddress, zeroAddress} from "viem";
 import AvatarViewer from "~/components/AvatarViewer.vue";
 
-const { connect } = useConnect();
-const { chainId, chain } = useAccount();
+const { connect, isConnected } = useConnect();
 const {setAvatar, getAvatarInfo} = useAvatarService();
 const {getAvatarForAddress} = useAvatarServiceApi();
 const route = useRoute();
 const router = useRouter();
+const chains = useChains();
 
 const IPFS_GATEWAY = "https://ipfs.io/ipfs/";
 
@@ -33,6 +40,7 @@ const fetchedWalletAddress = ref("");
 const avatarInfo = ref(null);
 const avatarMetadata = ref(null);
 const imageLink = ref("");
+const selectedChain = ref(chains.value[0]);
 
 onMounted(() => {
   if (walletAddress.value) {
@@ -40,7 +48,7 @@ onMounted(() => {
   }
 });
 
-watch(chainId, () => {
+watch(selectedChain, () => {
   updateAvatarInfo();
 });
 
@@ -64,7 +72,7 @@ async function updateAvatarInfo() {
 
     const apiRes = await getAvatarForAddress(address);
 
-    const chainName = chain.value.name.toLowerCase();
+    const chainName = selectedChain.value.name.toLowerCase();
 
     avatarInfo.value = {
       avatar: {
@@ -95,5 +103,9 @@ async function updateAvatarInfo() {
 <style scoped>
 .input {
   @apply bg-neutral-100 p-4 placeholder-neutral-300 rounded-2xl w-full;
+}
+
+.select {
+  @apply bg-neutral-100 p-4 placeholder-neutral-300 rounded-2xl;
 }
 </style>
