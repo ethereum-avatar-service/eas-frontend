@@ -58,6 +58,8 @@
           </div>
         </template>
       </div>
+      <hr class="h-[2px] bg-neutral-100 border-0">
+      <Faq />
     </div>
   </div>
 </template>
@@ -72,6 +74,7 @@ import Loading from "~/components/icons/Loading.vue";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { config } from "~/config";
 import AvatarViewer from "~/components/AvatarViewer.vue";
+import Faq from "~/components/Faq.vue";
 
 const { connect } = useConnect();
 const { address, isConnected, chainId, chain } = useAccount();
