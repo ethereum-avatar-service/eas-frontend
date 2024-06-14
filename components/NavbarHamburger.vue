@@ -7,6 +7,7 @@
       <template v-if="isSelecting">
         <div class="absolute mt-2 p-2 left-4 right-4 flex flex-col bg-neutral-50 border border-neutral-100 shadow-lg shadow-neutral-100 rounded-2xl duration-300">
           <NuxtLink replace to="/" class="link" active-class="link-active">My avatar</NuxtLink>
+          <NuxtLink replace to="/lookup" class="link" active-class="link-active" :class="{ 'link-active': route.path.includes('/lookup') }">Lookup</NuxtLink>
           <NuxtLink replace to="/whitelist" class="link" active-class="link-active">Verified collections</NuxtLink>
           <NuxtLink replace to="/docs" class="link" active-class="link-active">Docs</NuxtLink>
         </div>
@@ -17,6 +18,8 @@
 
 <script setup lang="ts">
 import {Bars3Icon} from "@heroicons/vue/20/solid";
+
+const route = useRoute();
 
 const isSelecting = ref(false);
 </script>

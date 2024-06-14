@@ -9,7 +9,9 @@
         <div class="p-4 bg-neutral-100 text-neutral-400/75 rounded-2xl truncate">{{ avatarInfo.avatar?.tokenAddress }}</div>
         <label class="mt-2 px-2 text-sm text-neutral-400/75">Token ID</label>
         <div class="p-4 bg-neutral-100 text-neutral-400/75 rounded-2xl truncate">{{ avatarInfo.avatar?.tokenId }}</div>
-        <div class="p-4 rounded-2xl truncate" :class="{ 'bg-green-100 text-green-500': avatarInfo.owned, 'bg-red-100 text-red-500': !avatarInfo.owned }">{{ avatarInfo.owned ? "Owned" : "Not owned" }}</div>
+        <template v-if="avatarInfo.avatar?.tokenAddress !== zeroAddress">
+          <div class="p-4 rounded-2xl truncate" :class="{ 'bg-green-100 text-green-500': avatarInfo.owned, 'bg-red-100 text-red-500': !avatarInfo.owned }">{{ avatarInfo.owned ? "Owned" : "Not owned" }}</div>
+        </template>
         <template v-if="avatarMetadata?.collection?.name">
           <template v-if="avatarMetadata?.collection?.verified">
             <VerifiedNotice />
@@ -40,10 +42,7 @@
             </div>
           </div>
         </template>
-        <template v-else-if="avatarInfo.avatar?.tokenAddress === zeroAddress">
-          <VerifiedNotice />
-        </template>
-        <template v-else>
+        <template v-else-if="avatarInfo.avatar?.tokenAddress !== zeroAddress">
           <UnknownNotice />
         </template>
       </div>

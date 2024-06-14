@@ -4,10 +4,11 @@
       <div class="hidden lg:flex items-center gap-8">
         <div class="flex items-center gap-2">
           <Logo class="w-7 h-7" />
-          <h1 class="font-semibold text-xl text-sky-500">ethereum avatar service</h1>
+          <h1 class="pb-1 font-semibold text-xl text-sky-500">ethereum avatar service</h1>
         </div>
         <div class="flex items-center gap-2">
           <NuxtLink replace to="/" class="link" active-class="link-active">My avatar</NuxtLink>
+          <NuxtLink replace to="/lookup" class="link" active-class="link-active" :class="{ 'link-active': route.path.includes('/lookup') }">Lookup</NuxtLink>
           <NuxtLink replace to="/whitelist" class="link" active-class="link-active">Verified collections</NuxtLink>
           <NuxtLink replace to="/docs" class="link" active-class="link-active">Docs</NuxtLink>
         </div>
@@ -15,7 +16,7 @@
       <div class="flex lg:hidden items-center gap-2">
         <div class="flex items-center gap-2">
           <Logo class="w-7 h-7" />
-          <span class="font-semibold text-3xl text-sky-500">eas</span>
+          <span class="pb-1 font-semibold text-3xl text-sky-500">eas</span>
         </div>
         <NavbarHamburger />
       </div>
@@ -46,6 +47,7 @@ import Logo from "~/components/icons/Logo.vue";
 const { connect } = useConnect();
 const { disconnect } = useDisconnect();
 const { address, isConnected } = useAccount();
+const route = useRoute();
 </script>
 
 <style scoped>
