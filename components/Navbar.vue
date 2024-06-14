@@ -1,5 +1,5 @@
 <template>
-  <header class="px-4 md:px-9 py-5 h-[72px] fixed w-full bg-neutral-50 border-b border-neutral-100">
+  <header class="px-4 md:px-9 py-5 h-[72px] fixed w-full bg-neutral-50 border-b border-neutral-100 z-10">
     <div class="h-full flex items-center">
       <div class="hidden lg:flex items-center gap-8">
         <h1 class="font-medium text-xl text-sky-500">ethereum avatar service</h1>
