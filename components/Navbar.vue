@@ -4,18 +4,18 @@
       <div class="hidden lg:flex items-center gap-8">
         <div class="flex items-center gap-2">
           <Logo class="w-7 h-7" />
-          <h1 class="font-medium text-xl text-sky-500">ethereum avatar service</h1>
+          <h1 class="font-semibold text-xl text-sky-500">ethereum avatar service</h1>
         </div>
         <div class="flex items-center gap-2">
           <NuxtLink replace to="/" class="link" active-class="link-active">My avatar</NuxtLink>
-          <NuxtLink replace to="/whitelist" class="link">Verified collections</NuxtLink>
-          <NuxtLink replace to="/docs" class="link">Docs</NuxtLink>
+          <NuxtLink replace to="/whitelist" class="link" active-class="link-active">Verified collections</NuxtLink>
+          <NuxtLink replace to="/docs" class="link" active-class="link-active">Docs</NuxtLink>
         </div>
       </div>
       <div class="flex lg:hidden items-center gap-2">
         <div class="flex items-center gap-2">
           <Logo class="w-7 h-7" />
-          <span class="font-medium text-3xl text-sky-500">eas</span>
+          <span class="font-semibold text-3xl text-sky-500">eas</span>
         </div>
         <NavbarHamburger />
       </div>
