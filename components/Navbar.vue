@@ -5,8 +5,8 @@
         <h1 class="font-medium text-xl text-sky-500">ethereum avatar service</h1>
         <div class="flex items-center gap-2">
           <NuxtLink replace to="/" class="link" active-class="link-active">My avatar</NuxtLink>
-          <NuxtLink replace to="whitelist" class="link">Verified collections</NuxtLink>
-          <NuxtLink replace to="docs" class="link">Docs</NuxtLink>
+          <NuxtLink replace to="/whitelist" class="link">Verified collections</NuxtLink>
+          <NuxtLink replace to="/docs" class="link">Docs</NuxtLink>
         </div>
       </div>
       <h1 class="md:hidden font-bold text-2xl text-blue-400">eas</h1>
