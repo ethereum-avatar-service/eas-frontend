@@ -14,7 +14,7 @@
         <button :disabled="!isSearchValid" @click="search" class="px-6 h-14 flex gap-2 flex-nowrap justify-center items-center bg-blue-500/20 hover:bg-blue-500/25 disabled:bg-neutral-100 font-medium text-blue-500 disabled:text-neutral-400/75 rounded-2xl duration-300">Go</button>
       </div>
       <template v-if="fetchedWalletAddress">
-        <AvatarViewer :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" :image-link="imageLink" />
+        <AvatarViewer :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" :image-link="imageLink" :is-loading="isGettingAvatar" />
       </template>
     </div>
   </div>
@@ -26,7 +26,8 @@ import {useAccount, useChains, useConnect} from "@wagmi/vue";
 import {isAddress, zeroAddress} from "viem";
 import AvatarViewer from "~/components/AvatarViewer.vue";
 
-const { connect, isConnected } = useConnect();
+const { connect } = useConnect();
+const { chain: accountChain } = useAccount();
 const {setAvatar, getAvatarInfo} = useAvatarService();
 const {getAvatarForAddress} = useAvatarServiceApi();
 const route = useRoute();
@@ -41,10 +42,21 @@ const avatarInfo = ref(null);
 const avatarMetadata = ref(null);
 const imageLink = ref("");
 const selectedChain = ref(chains.value[0]);
+const isGettingAvatar = ref(false);
 
 onMounted(() => {
+  if (accountChain.value) {
+    selectedChain.value = accountChain.value;
+  }
+
   if (walletAddress.value) {
     updateAvatarInfo();
+  }
+});
+
+watch(accountChain, () => {
+  if (accountChain.value) {
+    selectedChain.value = accountChain.value;
   }
 });
 
@@ -53,7 +65,7 @@ watch(selectedChain, () => {
 });
 
 const isSearchValid = computed(() => {
-  return walletAddress.value && isAddress(walletAddress.value) && walletAddress.value !== fetchedWalletAddress.value;
+  return walletAddress.value && isAddress(walletAddress.value) && walletAddress.value !== fetchedWalletAddress.value && !isGettingAvatar.value;
 });
 
 function search() {
@@ -66,6 +78,8 @@ function search() {
 
 async function updateAvatarInfo() {
   if (!isSearchValid) return;
+
+  isGettingAvatar.value = true;
 
   try {
     const address = walletAddress.value;
@@ -97,6 +111,8 @@ async function updateAvatarInfo() {
   } catch(error) {
     console.error("Error getting avatar:", error);
   }
+
+  isGettingAvatar.value = false;
 }
 </script>
 

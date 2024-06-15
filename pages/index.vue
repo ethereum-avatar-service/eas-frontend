@@ -2,7 +2,7 @@
   <div class="py-8 lg:py-16">
     <div class="max-w-lg mx-auto flex flex-col gap-12">
       <template v-if="isConnected">
-        <AvatarViewer :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" :image-link="imageLink" />
+        <AvatarViewer :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" :image-link="imageLink" :is-loading="isGettingAvatar" />
         <hr class="h-[2px] bg-neutral-100 border-0">
       </template>
       <div class="flex flex-col gap-6">
@@ -91,6 +91,7 @@ const setAvatarHash = ref(null);
 const setAvatarError = ref(null);
 const setAvatarIsPending = ref(false);
 const imageLink = ref("");
+const isGettingAvatar = ref(false);
 
 onMounted(() => {
   if (isConnected.value && address.value) {
@@ -160,6 +161,8 @@ async function handleSetAvatar() {
 }
 
 async function updateAvatarInfo() {
+  isGettingAvatar.value = true;
+
   try {
     getAvatarInfo().then(data => {
       avatarInfo.value = data;
@@ -181,6 +184,8 @@ async function updateAvatarInfo() {
   } catch(error) {
     console.error("Error getting avatar:", error);
   }
+
+  isGettingAvatar.value = false;
 }
 </script>
 

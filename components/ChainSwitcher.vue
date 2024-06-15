@@ -41,16 +41,16 @@ const chains = [
     icon: Ethereum
   },
   {
-    name: "Sepolia",
-    id: 11155111,
-    class: "bg-neutral-300 fill-neutral-500",
-    icon: Ethereum
-  },
-  {
     name: "Polygon",
     id: 137,
     class: "bg-purple-100 fill-purple-500",
     icon: Polygon
+  },
+  {
+    name: "Sepolia",
+    id: 11155111,
+    class: "bg-neutral-300 fill-neutral-500",
+    icon: Ethereum
   }
 ];
 

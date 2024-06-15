@@ -2,10 +2,12 @@
   <header class="px-4 md:px-9 py-5 h-[72px] fixed w-full bg-neutral-50 border-b border-neutral-100 z-10">
     <div class="h-full flex items-center">
       <div class="hidden xl:flex items-center gap-8">
-        <div class="flex items-center gap-2">
-          <Logo class="w-7 h-7" />
-          <h1 class="pb-1 font-semibold text-xl text-sky-500">ethereum avatar service</h1>
-        </div>
+        <NuxtLink to="/">
+          <div class="flex items-center gap-2">
+            <Logo class="w-7 h-7" />
+            <h1 class="pb-1 font-semibold text-xl text-sky-500">ethereum avatar service</h1>
+          </div>
+        </NuxtLink>
         <div class="flex items-center gap-2">
           <NuxtLink replace to="/" class="link" active-class="link-active">My avatar</NuxtLink>
           <NuxtLink replace to="/lookup" class="link" active-class="link-active" :class="{ 'link-active': route.path.includes('/lookup') }">Lookup</NuxtLink>
@@ -14,10 +16,12 @@
         </div>
       </div>
       <div class="flex xl:hidden items-center gap-2">
-        <div class="flex items-center gap-2">
-          <Logo class="w-7 h-7" />
-          <span class="pb-1 font-semibold text-3xl text-sky-500">eas</span>
-        </div>
+        <NuxtLink to="/">
+          <div class="flex items-center gap-2">
+            <Logo class="w-7 h-7" />
+            <span class="pb-1 font-semibold text-3xl text-sky-500">eas</span>
+          </div>
+        </NuxtLink>
         <NavbarHamburger />
       </div>
       <div class="ml-auto px-2 flex items-center gap-1">

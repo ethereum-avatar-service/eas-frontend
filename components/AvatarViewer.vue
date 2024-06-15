@@ -1,5 +1,5 @@
 <template>
-  <template v-if="avatarInfo">
+  <template v-if="avatarInfo && !isLoading">
     <div class="flex flex-col items-center">
       <div class="relative">
 <!--        <template v-if="imageLink">-->
@@ -22,10 +22,10 @@
         <template v-if="avatarMetadata?.collection?.verified">
           <VerifiedNotice />
         </template>
-        <template v-else-if="avatarMetadata">
+        <template v-else-if="avatarMetadata && avatarInfo.avatar?.tokenAddress !== zeroAddress">
           <UnverifiedNotice />
         </template>
-        <template v-else>
+        <template v-else-if="avatarInfo.avatar?.tokenAddress !== zeroAddress">
           <UnknownNotice />
         </template>
         <template v-if="avatarMetadata?.collection?.name">
@@ -74,7 +74,8 @@ import UnknownNotice from "~/components/collection/UnknownNotice.vue";
 const props = defineProps({
   avatarInfo: Object,
   avatarMetadata: Object,
-  imageLink: String
+  imageLink: String,
+  isLoading: Boolean
 });
 </script>
 
