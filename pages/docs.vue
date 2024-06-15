@@ -22,9 +22,9 @@
       </div>
       <div class="flex flex-col gap-3">
         <h1 class="font-medium text-2xl">Contracts</h1>
-        <span>Ethereum: <a href="https://etherscan.io/address/0x9AfDC4097DCDc49Aac58D4aaEa353B3a8ec60F1d" target="_blank" class="text-sky-500">0x9AfDC4097DCDc49Aac58D4aaEa353B3a8ec60F1d</a></span>
-        <span>Polygon: <a href="https://polygonscan.com/address/0xd9517Fa5223322e1bD731af127A7C51fd34c2222" target="_blank" class="text-sky-500">0xd9517Fa5223322e1bD731af127A7C51fd34c2222</a></span>
-        <span>Sepolia: <a href="https://sepolia.etherscan.io/address/0xdCD59d96454D585B12Ef167c15c43D0BFF96DC3F" target="_blank" class="text-sky-500">0xdCD59d96454D585B12Ef167c15c43D0BFF96DC3F</a></span>
+        <span class="truncate">Ethereum: <a href="https://etherscan.io/address/0x9AfDC4097DCDc49Aac58D4aaEa353B3a8ec60F1d" target="_blank" class="text-sky-500">0x9AfDC4097DCDc49Aac58D4aaEa353B3a8ec60F1d</a></span>
+        <span class="truncate">Polygon: <a href="https://polygonscan.com/address/0xd9517Fa5223322e1bD731af127A7C51fd34c2222" target="_blank" class="text-sky-500">0xd9517Fa5223322e1bD731af127A7C51fd34c2222</a></span>
+        <span class="truncate">Sepolia: <a href="https://sepolia.etherscan.io/address/0xdCD59d96454D585B12Ef167c15c43D0BFF96DC3F" target="_blank" class="text-sky-500">0xdCD59d96454D585B12Ef167c15c43D0BFF96DC3F</a></span>
       </div>
       <div class="flex flex-col gap-3">
         <h1 class="font-medium text-2xl">API</h1>
