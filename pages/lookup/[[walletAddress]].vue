@@ -45,7 +45,9 @@ const selectedChain = ref(chains.value[0]);
 const isGettingAvatar = ref(false);
 
 onMounted(() => {
-  if (accountChain.value) {
+  if (route.query?.network) {
+    selectChainByName(route.query?.network);
+  } else if (accountChain.value) {
     selectedChain.value = accountChain.value;
   }
 
@@ -61,6 +63,11 @@ watch(accountChain, () => {
 });
 
 watch(selectedChain, () => {
+  router.push({
+    params: { walletAddress: walletAddress.value },
+    query: { network: selectedChain.value.name.toLowerCase() }
+  });
+
   updateAvatarInfo();
 });
 
@@ -68,9 +75,18 @@ const isSearchValid = computed(() => {
   return walletAddress.value && isAddress(walletAddress.value) && walletAddress.value !== fetchedWalletAddress.value && !isGettingAvatar.value;
 });
 
+function selectChainByName(name) {
+  for (const chain of chains.value) {
+    if (chain.name.toLowerCase() === name.toLowerCase()) {
+      selectedChain.value = chain;
+    }
+  }
+}
+
 function search() {
   router.push({
-    params: { walletAddress: walletAddress.value }
+    params: { walletAddress: walletAddress.value },
+    query: { network: selectedChain.value.name.toLowerCase() }
   });
 
   updateAvatarInfo();
