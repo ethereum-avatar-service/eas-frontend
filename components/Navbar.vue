@@ -30,7 +30,7 @@
           <div class="px-3 h-8 hidden md:flex justify-center items-center rounded-full duration-300">{{ `${address.slice(0, 6)}...${address.slice(38, 42)}` }}</div>
           <button @click="disconnect" class="group px-2 h-8 flex justify-center gap-2 items-center hover:bg-red-100 text-red-400 hover:text-red-500 duration-300 rounded-full">
             <PowerIcon class="w-5 h-5" />
-            <span class="pr-1 hidden group-hover:block overflow-hidden">Disconnect</span>
+            <span class="pr-1 hidden lg:group-hover:block overflow-hidden">Disconnect</span>
           </button>
         </template>
         <template v-else>
