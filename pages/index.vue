@@ -66,7 +66,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {useAccount, useConnect} from "@wagmi/vue";
+import {useAccount, useConnect, useSwitchChain} from "@wagmi/vue";
 import {injected} from "@wagmi/vue/connectors";
 import {isAddress, zeroAddress} from "viem";
 import {CheckIcon, XMarkIcon} from "@heroicons/vue/20/solid";
@@ -78,6 +78,7 @@ import Faq from "~/components/Faq.vue";
 
 const { connect } = useConnect();
 const { address, isConnected, chainId, chain } = useAccount();
+const { switchChain } = useSwitchChain();
 const {setAvatar, getAvatarInfo} = useAvatarService();
 const {getAvatarForAddress} = useAvatarServiceApi();
 
@@ -163,7 +164,15 @@ async function handleSetAvatar() {
 async function updateAvatarInfo() {
   isGettingAvatar.value = true;
 
+  if (!chain.value) {
+    switchChain({ chainId: 1 });
+  }
+
   try {
+    if (!chain.value) {
+      throw Error("No recognized chain");
+    }
+
     getAvatarInfo().then(data => {
       avatarInfo.value = data;
     });
@@ -176,7 +185,7 @@ async function updateAvatarInfo() {
 
     let src = avatarMetadata.value["image"];
 
-    if (src.startsWith("ipfs://")) {
+    if (src && src.startsWith("ipfs://")) {
       src = src.replace("ipfs://", IPFS_GATEWAY);
     }
 
