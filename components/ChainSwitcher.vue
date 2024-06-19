@@ -31,6 +31,7 @@
 import {ChevronDownIcon} from "@heroicons/vue/20/solid";
 import Ethereum from "~/components/icons/chains/Ethereum.vue";
 import Polygon from "~/components/icons/chains/Polygon.vue";
+import Base from "~/components/icons/chains/Base.vue";
 import {useAccount, useSwitchChain} from "@wagmi/vue";
 
 const chains = [
@@ -45,6 +46,12 @@ const chains = [
     id: 137,
     class: "bg-purple-100 fill-purple-500",
     icon: Polygon
+  },
+  {
+    name: "Base",
+    id: 8453,
+    class: "bg-[#0052FF]/20",
+    icon: Base
   },
   {
     name: "Sepolia",
