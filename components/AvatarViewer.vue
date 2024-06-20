@@ -2,14 +2,7 @@
   <template v-if="avatarInfo && !isLoading">
     <div class="flex flex-col items-center">
       <div class="relative">
-<!--        <template v-if="imageLink">-->
-<!--          <div class="absolute top-0 w-72 h-72 flex items-center rounded-full overflow-hidden blur-2xl opacity-50">-->
-<!--            <img :src="imageLink" class="object-cover" alt="" />-->
-<!--          </div>-->
-<!--        </template>-->
-        <div class="hex w-72 h-72 flex items-center bg-sky-500 overflow-hidden">
-          <img :src="imageLink" class="object-cover" alt="" />
-        </div>
+        <Avatar :src="imageLink" :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" />
       </div>
       <div class="mt-16 flex flex-col gap-2 text-center w-full">
         <label class="px-2 text-sm text-neutral-400/75">Token Address</label>
@@ -29,7 +22,7 @@
           <UnknownNotice />
         </template>
         <template v-if="avatarMetadata?.collection?.name">
-          <label class="mt-2 px-2 text-sm text-neutral-400/75">Collection</label>
+          <label class="p-4 text-sm text-neutral-400/75">Collection</label>
           <div class="p-4 flex flex-col gap-2 text-sm border-2 border-neutral-100 rounded-2xl truncate">
             <div class="flex items-center gap-2">
               <span class="text-neutral-400/75">Name:</span>
@@ -70,6 +63,7 @@ import {zeroAddress} from "viem";
 import VerifiedNotice from "~/components/collection/VerifiedNotice.vue";
 import UnverifiedNotice from "~/components/collection/UnverifiedNotice.vue";
 import UnknownNotice from "~/components/collection/UnknownNotice.vue";
+import Avatar from "~/components/Avatar.vue";
 
 const props = defineProps({
   avatarInfo: Object,
