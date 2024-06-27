@@ -8,18 +8,31 @@
     <div class="tooltip max-w-96 absolute mt-2 left-1/2 transform -translate-x-1/2 hidden group-hover:flex bg-neutral-50 border border-neutral-100 shadow-lg shadow-neutral-100 rounded-2xl duration-300">
       <div class="w-full p-4 flex flex-col gap-2 text-sm">
         <div class="flex items-center gap-2">
+          <span class="text-neutral-400/75">Network:</span>
+          <span class="capitalize truncate">{{ avatarNetwork }}</span>
+        </div>
+        <hr class="h-[2px] bg-neutral-100 border-0">
+        <div class="flex items-center gap-2">
           <span class="text-neutral-400/75">Contract:</span>
           <span class="truncate">{{ avatarInfo?.avatar?.tokenAddress }}</span>
         </div>
         <hr class="h-[2px] bg-neutral-100 border-0">
         <div class="flex items-center gap-2">
           <span class="text-neutral-400/75">Owned:</span>
-          <span class="capitalize truncate" :class="avatarInfo?.owned ? 'text-green-500' : 'text-red-500'">{{ !!avatarInfo?.owned }}</span>
+          <span class="truncate" :class="avatarInfo?.owned ? 'text-green-500' : 'text-red-500'">{{ !!avatarInfo?.owned }}</span>
         </div>
         <hr class="h-[2px] bg-neutral-100 border-0">
         <div class="flex items-center gap-2">
           <span class="text-neutral-400/75">Collection:</span>
-          <span class="truncate">{{ avatarMetadata?.collection?.name }}</span>
+          <div class="flex items-center overflow-hidden">
+            <span class="truncate">{{ avatarMetadata?.collection?.name }}</span>
+            <template v-if="avatarMetadata?.collection?.verified">
+              <CheckBadgeIcon class="w-5 h-5 text-green-400" />
+            </template>
+            <template v-else>
+              <XMarkIcon class="w-5 h-5 text-red-400" />
+            </template>
+          </div>
         </div>
         <hr class="h-[2px] bg-neutral-100 border-0">
         <div class="flex items-center gap-2">
@@ -42,8 +55,11 @@
 </template>
 
 <script setup lang="ts">
+import {CheckBadgeIcon, XMarkIcon} from "@heroicons/vue/16/solid";
+
 const props = defineProps({
   src: String,
+  avatarNetwork: String,
   avatarInfo: Object,
   avatarMetadata: Object
 });

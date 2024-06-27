@@ -2,7 +2,7 @@
   <template v-if="avatarInfo && !isLoading">
     <div class="flex flex-col items-center">
       <div class="relative">
-        <Avatar :src="imageLink" :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" />
+        <Avatar :src="imageLink" :avatar-network="avatarNetwork" :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" />
       </div>
       <div class="mt-16 flex flex-col gap-2 text-center w-full">
         <label class="px-2 text-sm text-neutral-400/75">Token Address</label>
@@ -66,6 +66,7 @@ import UnknownNotice from "~/components/collection/UnknownNotice.vue";
 import Avatar from "~/components/Avatar.vue";
 
 const props = defineProps({
+  avatarNetwork: String,
   avatarInfo: Object,
   avatarMetadata: Object,
   imageLink: String,

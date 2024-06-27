@@ -2,7 +2,7 @@
   <div class="py-8 lg:py-16">
     <div class="max-w-lg mx-auto flex flex-col gap-12">
       <template v-if="isConnected">
-        <AvatarViewer :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" :image-link="imageLink" :is-loading="isGettingAvatar" />
+        <AvatarViewer :avatarNetwork="avatarNetwork" :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" :image-link="imageLink" :is-loading="isGettingAvatar" />
         <hr class="h-[2px] bg-neutral-100 border-0">
       </template>
       <div class="flex flex-col gap-6">
@@ -84,6 +84,7 @@ const {getAvatarForAddress} = useAvatarServiceApi();
 
 const IPFS_GATEWAY = "https://ipfs.io/ipfs/";
 
+const avatarNetwork = ref(null);
 const avatarInfo = ref(null);
 const avatarMetadata = ref(null);
 const tokenAddress = ref(zeroAddress);
@@ -180,6 +181,8 @@ async function updateAvatarInfo() {
     const apiRes = await getAvatarForAddress(address.value);
 
     const chainName = chain.value.name.toLowerCase();
+
+    avatarNetwork.value = chainName;
 
     avatarMetadata.value = apiRes["networks"][chainName]["flat"]["avatar_metadata"];
 

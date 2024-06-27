@@ -14,7 +14,14 @@
         <button :disabled="!isSearchValid" @click="search" class="px-6 h-14 flex gap-2 flex-nowrap justify-center items-center bg-blue-500/20 hover:bg-blue-500/25 disabled:bg-neutral-100 font-medium text-blue-500 disabled:text-neutral-400/75 rounded-2xl duration-300">Go</button>
       </div>
       <template v-if="fetchedWalletAddress">
-        <AvatarViewer :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" :image-link="imageLink" :is-loading="isGettingAvatar" />
+        <AvatarViewer :avatarNetwork="avatarNetwork" :avatar-info="avatarInfo" :avatar-metadata="avatarMetadata" :image-link="imageLink" :is-loading="isGettingAvatar" />
+      </template>
+      <template v-else>
+        <div class="grid grid-cols-4">
+          <template v-for="avatar in avatars">
+
+          </template>
+        </div>
       </template>
     </div>
   </div>
@@ -38,15 +45,17 @@ const IPFS_GATEWAY = "https://ipfs.io/ipfs/";
 
 const walletAddress = ref(route.params.walletAddress ?? "");
 const fetchedWalletAddress = ref("");
+const avatarNetwork = ref(null);
 const avatarInfo = ref(null);
 const avatarMetadata = ref(null);
 const imageLink = ref("");
 const selectedChain = ref(chains.value[0]);
 const isGettingAvatar = ref(false);
+const avatars = ref([]);
 
 onMounted(() => {
-  if (route.query?.network) {
-    selectChainByName(route.query?.network);
+  if (route.query?.avatarNetwork) {
+    selectChainByName(route.query?.avatarNetwork);
   } else if (accountChain.value) {
     selectedChain.value = accountChain.value;
   }
@@ -103,6 +112,8 @@ async function updateAvatarInfo() {
     const apiRes = await getAvatarForAddress(address);
 
     const chainName = selectedChain.value.name.toLowerCase();
+
+    avatarNetwork.value = chainName;
 
     avatarInfo.value = {
       avatar: {
