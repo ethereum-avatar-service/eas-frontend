@@ -14,9 +14,9 @@
               <table class="table-auto w-full text-sm text-nowrap text-left">
                 <thead class="text-neutral-400">
                 <tr class="bg-neutral-100">
-                  <th class="font-normal px-6 py-3">Name</th>
-                  <th class="font-normal px-6 py-3">Contract</th>
-                  <th class="font-normal px-6 py-3">Verified</th>
+                  <th class="w-6/12 font-normal px-6 py-3">Name</th>
+                  <th class="w-5/12 font-normal px-6 py-3">Contract</th>
+                  <th class="w-1/12 font-normal px-6 py-3">Verified</th>
                 </tr>
                 </thead>
                 <tbody>
